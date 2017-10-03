@@ -14,7 +14,7 @@ namespace ESTest
             const string STREAM = "a_test_stream";
             const int DEFAULTPORT = 1113;
 
-            var settings = ConnectionSettings.Create();
+            var settings = ConnectionSettings.Create().EnableVerboseLogging().UseConsoleLogger();
         
             using (var conn = EventStoreConnection.Create(settings, new IPEndPoint(IPAddress.Loopback, DEFAULTPORT)))
             {
