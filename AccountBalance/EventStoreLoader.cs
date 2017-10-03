@@ -25,41 +25,41 @@ namespace AccountBalance
         private static Process _process;
 
         public static IEventStoreConnection Connection { get; private set; }
-        public static void SetupEventStore(StartConflictOption opt = StartConflictOption.Connect)
+        public static void SetupEventStore()
         {
 
             //TODO: Convert to Embedded when I can figure out loading the miniWeb component
-            var runningEventStores = Process.GetProcessesByName("EventStore.ClusterNode");
-            if (runningEventStores.Length != 0)
-            {
-                switch (opt)
-                {
-                    case StartConflictOption.Connect:
-                        _process = runningEventStores[0];
-                        break;
-                    case StartConflictOption.Kill:
-                        foreach (var es in runningEventStores)
-                        {
-                            es.Kill();
-                        }
-                        break;
-                    case StartConflictOption.Error:
-                        throw new Exception("Conflicting EventStore running.");
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(opt), opt, null);
-                }
-            }
-            if (_process == null)
-            {
-                _process = new Process
-                {
-                    StartInfo =
-                    {
-                        UseShellExecute = false, CreateNoWindow = true, FileName = Path, Arguments = Args, Verb = "runas"
-                    }
-                };
-                _process.Start();
-            }
+            //var runningEventStores = Process.GetProcessesByName("EventStore.ClusterNode");
+            //if (runningEventStores.Length != 0)
+            //{
+            //    switch (opt)
+            //    {
+            //        case StartConflictOption.Connect:
+            //            _process = runningEventStores[0];
+            //            break;
+            //        case StartConflictOption.Kill:
+            //            foreach (var es in runningEventStores)
+            //            {
+            //                es.Kill();
+            //            }
+            //            break;
+            //        case StartConflictOption.Error:
+            //            throw new Exception("Conflicting EventStore running.");
+            //        default:
+            //            throw new ArgumentOutOfRangeException(nameof(opt), opt, null);
+            //    }
+            //}
+            //if (_process == null)
+            //{
+            //    _process = new Process
+            //    {
+            //        StartInfo =
+            //        {
+            //            UseShellExecute = false, CreateNoWindow = true, FileName = Path, Arguments = Args, Verb = "runas"
+            //        }
+            //    };
+            //    _process.Start();
+            //}
             var tcp = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1113);
             var http = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 2113);
             Connection = EventStoreConnection.Create(tcp);
@@ -88,22 +88,22 @@ namespace AccountBalance
             }
         }
 
-        public static void TeardownEventStore(bool leaveRunning = true, bool dropData = false)
-        {
-            Connection.Close();
-            if (
-                leaveRunning ||
-                _process == null ||
-                _process.HasExited
-                ) return;
+    //    public static void TeardownEventStore(bool leaveRunning = true, bool dropData = false)
+    //    {
+    //        Connection.Close();
+    //        if (
+    //            leaveRunning ||
+    //            _process == null ||
+    //            _process.HasExited
+    //            ) return;
 
-            _process.Kill();
-            _process.WaitForExit();
-            if (dropData)
-            {
-                Directory.Delete(@".\ESData", true);
-            }
-        }
+    //        _process.Kill();
+    //        _process.WaitForExit();
+    //        if (dropData)
+    //        {
+    //            Directory.Delete(@".\ESData", true);
+    //        }
+    //    }
     }
 
     public class NullLogger : ILogger

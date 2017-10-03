@@ -35,14 +35,14 @@ namespace AccountBalance
                 if (cmd.Equals("clean", StringComparison.OrdinalIgnoreCase))
                 {
                     Console.WriteLine("Shutting down EventStore and Cleaning data");
-                    EventStoreLoader.TeardownEventStore(false, true);
-                    File.Delete(_localFile);
+                    //EventStoreLoader.TeardownEventStore(false, true);
+                    //File.Delete(_localFile);
                     break;
                 }
                 if (cmd.Equals("exit", StringComparison.OrdinalIgnoreCase))
                 {
                     Console.WriteLine("Disconnecting EventStore");
-                    EventStoreLoader.TeardownEventStore();
+                    //EventStoreLoader.TeardownEventStore();
                     break;
                 }
                 if (cmd.Equals("repeat", StringComparison.OrdinalIgnoreCase))
